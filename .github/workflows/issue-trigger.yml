@@ -1,0 +1,19 @@
+name: Issue Trigger Example
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  issue:
+    runs-on: ubuntu-latest  # This defines the environment the job will run on
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2 
+
+      - name: Call Spring Boot Webhook
+        run: |
+          curl -X POST http://<public-url>/webhook \
+            -H "Content-Type: application/json" \
+            -d '{"action": "${{ github.event.action }}", "issue": {"title": "${{ github.event.issue.title }}"}}'
