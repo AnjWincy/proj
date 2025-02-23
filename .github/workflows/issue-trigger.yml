@@ -14,6 +14,6 @@ jobs:
 
       - name: Call Spring Boot Webhook
         run: |
-          curl -X POST http://<public-url>/webhook \
+          curl -X POST http://localhost:8080/webhook \
             -H "Content-Type: application/json" \
             -d '{"action": "${{ github.event.action }}", "issue": {"title": "${{ github.event.issue.title }}"}}'
