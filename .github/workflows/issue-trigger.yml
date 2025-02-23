@@ -12,8 +12,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2 
 
-      - name: Call Spring Boot Webhook
+      - name: Update Task or Trigger Action
         run: |
-          curl -X POST http://localhost:8080/webhook \
-            -H "Content-Type: application/json" \
-            -d '{"action": "${{ github.event.action }}", "issue": {"title": "${{ github.event.issue.title }}"}}'
+          echo "New issue opened: ${{ github.event.issue.title }}"
+          # Using GitHub API to update issue, for example:
+          curl -X PATCH https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }} \
+          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          -d '{"state": "closed", "body": "This issue has been closed by the GitHub Actions workflow."}'
